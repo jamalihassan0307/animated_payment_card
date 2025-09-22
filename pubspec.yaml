@@ -1,6 +1,6 @@
 name: flutter_credit_card
 description: A beautiful, animated credit card input form for Flutter with validation and card flipping animation
-version: 4.2.0
+version: 1.0.1
 homepage: https://github.com/jamalihassan0307/flutter_credit_card
 
 environment:

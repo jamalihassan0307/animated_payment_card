@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-09-22
+
+### Added
+- New Vue.js-inspired credit card widget with advanced animations
+- Multiple widget variations: Perfect, Ultimate, New, and Vue styles
+- Advanced animation effects: shimmer, pulse, elastic, slide transitions
+- Premium card number masking (first 4, last 4, middle stars)
+- Enhanced form validation with custom validators
+- Improved card brand detection and icon animations
+- Focus overlay effects with smooth transitions
+- Multiple background card designs
+- Responsive layout optimizations
+
+### Fixed
+- SDK constraint compatibility issues for pub.dev publishing
+- Deprecated `withOpacity` usage replaced with `withValues`
+- Removed unused imports, fields, and variables
+- Fixed overflow issues in card layouts
+- Improved performance and reduced widget rebuilds
+- CVV security enhancements (no preview, only stars)
+
+### Changed
+- Updated to Flutter 3.8.1+ compatibility
+- Enhanced README with comprehensive examples and documentation
+- Improved API documentation and code examples
+- Better error handling and validation messages
+- Optimized animation performance
+
+### Documentation
+- Complete rewrite of README with professional styling
+- Added comprehensive usage examples for all widgets
+- Detailed API reference with parameter descriptions
+- Best practices guide for security and performance
+- Added screenshots and demo GIFs
+
 ## [1.0.0] - 2025-09-22
 
 ### Added

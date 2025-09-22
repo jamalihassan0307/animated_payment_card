@@ -601,7 +601,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
                             Shadow(
                               offset: const Offset(0, 0),
                               blurRadius: 15 * _slideController.value,
-                              color: Colors.white.withOpacity(0.5 * _slideController.value),
+                              color: Colors.white.withValues(alpha: 0.5 * _slideController.value),
                             ),
                         ],
                       ),
@@ -637,7 +637,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
                     Text(
                       'Card Holder',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontSize: smallFontSize,
                         letterSpacing: 0.3,
                         height: 1.4,

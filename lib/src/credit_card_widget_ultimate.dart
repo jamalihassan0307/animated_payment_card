@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'credit_card_brand.dart';
-import 'credit_card_model.dart';
 
 /// A pixel-perfect credit card widget that exactly matches the Vue.js design
 class CreditCardWidgetUltimate extends StatefulWidget {
@@ -100,7 +99,6 @@ class _CreditCardWidgetUltimateState extends State<CreditCardWidgetUltimate>
   late Animation<Offset> _slideAnimation;
   
   int _currentBackgroundIndex = 1;
-  Rect? _focusRect;
 
   @override
   void initState() {
@@ -408,7 +406,6 @@ class _CreditCardWidgetUltimateState extends State<CreditCardWidgetUltimate>
 
   Widget _buildCardNumber(bool isSmall) {
     final fontSize = isSmall ? 19.0 : 24.0;
-    final brand = _getCardBrand();
     final displayNumber = _formatCardNumber();
     
     return AnimatedBuilder(
