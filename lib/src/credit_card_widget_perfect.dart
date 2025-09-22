@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'credit_card_brand.dart';
-import 'credit_card_model.dart';
 
 /// A credit card widget that perfectly matches the Vue.js design
 class CreditCardWidgetPerfect extends StatefulWidget {
@@ -342,7 +341,6 @@ class _CreditCardWidgetPerfectState extends State<CreditCardWidgetPerfect>
   }
 
   Widget _buildCardNumber() {
-    final brand = _getCardBrand();
     final displayNumber = _formatCardNumber();
     
     return Text(

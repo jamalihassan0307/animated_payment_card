@@ -1,0 +1,26 @@
+# Files to ignore when publishing to pub.dev
+
+# Example app build files
+example/build/
+example/.dart_tool/
+example/pubspec.lock
+
+# Development files
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.gitignore
+.git/

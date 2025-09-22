@@ -1,6 +1,6 @@
 <div align="center">
   <kbd>
-    <img src="https://github.com/jamalihassan0307/flutter_credit_card/blob/main/image/images.jpeg?raw=true" width="250" alt="Jam Ali Hassan"/>
+    <img src="https://github.com/jamalihassan0307/flutter_credit_card/blob/main/image/image.jpg?raw=true" width="250" alt="Jam Ali Hassan"/>
   </kbd>
   
   <h1>💳 Flutter Credit Card 💳</h1>

@@ -131,7 +131,6 @@ class _CreditCardFormUltimateState extends State<CreditCardFormUltimate> {
   bool _isCvvFocused = false;
   String _selectedMonth = '';
   String _selectedYear = '';
-  String? _currentFocus;
 
   @override
   void initState() {
@@ -188,7 +187,7 @@ class _CreditCardFormUltimateState extends State<CreditCardFormUltimate> {
 
   void _updateFocus(String? focusType) {
     setState(() {
-      _currentFocus = focusType;
+      // Focus state is handled through callbacks
     });
     widget.onFocusChange?.call(focusType);
   }

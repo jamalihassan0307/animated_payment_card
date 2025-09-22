@@ -690,7 +690,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
                   Text(
                     'Expires',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontSize: smallFontSize,
                       letterSpacing: 0.3,
                       height: 1.4,
@@ -741,7 +741,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     final topMargin = isSmall ? 15.0 : 25.0;
     final bottomPadding = isSmall ? 8.0 : 12.0;
 
-    return Container(
+    return SizedBox(
       width: width,
       height: height,
       child: Column(
