@@ -272,7 +272,7 @@ class _CreditCardWidgetPerfectState extends State<CreditCardWidgetPerfect>
               )
             else
               Image.network(
-                'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/$_currentBackgroundIndex.jpeg',
+                'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/$_currentBackgroundIndex.jpeg',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
@@ -518,19 +518,19 @@ class _CreditCardWidgetPerfectState extends State<CreditCardWidgetPerfect>
     String iconPath;
     switch (brand) {
       case CreditCardBrand.visa:
-        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/visa.png';
+        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/visa.png';
         break;
       case CreditCardBrand.mastercard:
-        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/mastercard.png';
+        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/mastercard.png';
         break;
       case CreditCardBrand.americanExpress:
-        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/amex.png';
+        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/amex.png';
         break;
       case CreditCardBrand.discover:
-        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/discover.png';
+        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/discover.png';
         break;
       default:
-        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/visa.png';
+        iconPath = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/visa.png';
     }
     
     return Image.network(

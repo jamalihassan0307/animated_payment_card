@@ -121,7 +121,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   void _setRandomBackground() {
     // Generate random background number (1-25) like in original
     final random = math.Random().nextInt(25) + 1;
-    _backgroundImage = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/$random.jpeg';
+    _backgroundImage = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/$random.jpeg';
   }
 
   @override
@@ -243,7 +243,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
                       children: [
                         // Chip
                         Image.network(
-                          'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/chip.png',
+                          'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/chip.png',
                           width: 60,
                           height: 45,
                           errorBuilder: (context, error, stackTrace) {
@@ -680,7 +680,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: Image.network(
-          'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/$cardTypeImage.png',
+          'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/$cardTypeImage.png',
           key: ValueKey(_cardBrand),
           fit: BoxFit.contain,
           alignment: Alignment.centerRight,

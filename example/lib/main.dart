@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/src/credit_card_widget_vue.dart';
-import 'package:flutter_credit_card/src/credit_card_form_ultimate.dart';
-import 'package:flutter_credit_card/src/credit_card_model.dart';
+import 'package:animated_payment_card/animated_payment_card.dart';
 
 void main() {
   runApp(const MyApp());

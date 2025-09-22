@@ -1,10 +1,10 @@
 <div align="center">
   <kbd>
-    <img src="https://github.com/jamalihassan0307/flutter_credit_card/blob/main/image/image.jpg?raw=true" width="250" alt="Jam Ali Hassan"/>
+    <img src="https://github.com/jamalihassan0307/animated_payment_card/blob/main/image/image.jpg?raw=true" width="250" alt="Jam Ali Hassan"/>
   </kbd>
   
-  <h1>💳 Flutter Credit Card 💳</h1>
-  <p><i>Beautiful, animated credit card input form for Flutter</i></p>
+  <h1>💳 Animated Payment Card 💳</h1>
+  <p><i>Beautiful, animated payment card input form for Flutter</i></p>
   
   <p align="center">
     <a href="https://github.com/jamalihassan0307">
@@ -25,8 +25,8 @@
   </p>
 
   <p align="center">
-    <a href="https://pub.dev/packages/flutter_credit_card">
-      <img src="https://img.shields.io/pub/v/flutter_credit_card?style=for-the-badge&logo=dart&logoColor=white" alt="Pub Version"/>
+    <a href="https://pub.dev/packages/animated_payment_card">
+      <img src="https://img.shields.io/pub/v/animated_payment_card?style=for-the-badge&logo=dart&logoColor=white" alt="Pub Version"/>
     </a>
     <a href="https://flutter.dev">
       <img src="https://img.shields.io/badge/Platform-Flutter-02569B?style=for-the-badge&logo=flutter" alt="Platform"/>
@@ -37,31 +37,31 @@
   </p>
 
   <p align="center">
-    <a href="https://pub.dev/packages/flutter_credit_card">
-      <img src="https://img.shields.io/pub/likes/flutter_credit_card?style=for-the-badge&logo=flutter&logoColor=white&label=Pub%20Likes" alt="Pub Likes"/>
+    <a href="https://pub.dev/packages/animated_payment_card">
+      <img src="https://img.shields.io/pub/likes/animated_payment_card?style=for-the-badge&logo=flutter&logoColor=white&label=Pub%20Likes" alt="Pub Likes"/>
     </a>
-    <a href="https://pub.dev/packages/flutter_credit_card">
-      <img src="https://img.shields.io/pub/points/flutter_credit_card?style=for-the-badge&logo=flutter&logoColor=white&label=Pub%20Points" alt="Pub Points"/>
+    <a href="https://pub.dev/packages/animated_payment_card">
+      <img src="https://img.shields.io/pub/points/animated_payment_card?style=for-the-badge&logo=flutter&logoColor=white&label=Pub%20Points" alt="Pub Points"/>
     </a>
-    <a href="https://pub.dev/packages/flutter_credit_card">
-      <img src="https://img.shields.io/pub/popularity/flutter_credit_card?style=for-the-badge&logo=flutter&logoColor=white&label=Popularity" alt="Popularity"/>
+    <a href="https://pub.dev/packages/animated_payment_card">
+      <img src="https://img.shields.io/pub/popularity/animated_payment_card?style=for-the-badge&logo=flutter&logoColor=white&label=Popularity" alt="Popularity"/>
     </a>
   </p>
 
   <p align="center">
-    <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/demo.gif" width="600" alt="Demo"/>
+    <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/demo.gif" width="600" alt="Demo"/>
   </p>
 </div>
 
 ---
 
-# Flutter Credit Card 💳
+# Animated Payment Card 💳
 
-A Flutter package that provides a beautiful, animated credit card input form with smooth animations, card flipping effects, and comprehensive validation. Perfect for payment screens, e-commerce apps, and any application requiring credit card input with a premium user experience.
+A Flutter package that provides a beautiful, animated payment card input form with smooth animations, card flipping effects, and comprehensive validation. Perfect for payment screens, e-commerce apps, and any application requiring credit card input with a premium user experience.
 
-[![pub package](https://img.shields.io/pub/v/flutter_credit_card.svg)](https://pub.dev/packages/flutter_credit_card)
-[![likes](https://img.shields.io/pub/likes/flutter_credit_card)](https://pub.dev/packages/flutter_credit_card/score)
-[![popularity](https://img.shields.io/pub/popularity/flutter_credit_card)](https://pub.dev/packages/flutter_credit_card/score)
+[![pub package](https://img.shields.io/pub/v/animated_payment_card.svg)](https://pub.dev/packages/animated_payment_card)
+[![likes](https://img.shields.io/pub/likes/animated_payment_card)](https://pub.dev/packages/animated_payment_card/score)
+[![popularity](https://img.shields.io/pub/popularity/animated_payment_card)](https://pub.dev/packages/animated_payment_card/score)
 
 ## Features 🛠️
 
@@ -106,7 +106,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_credit_card: ^1.0.0
+  animated_payment_card: ^1.0.0
 ```
 
 ## Usage Examples 💻
@@ -115,7 +115,7 @@ dependencies:
 
 #### 1. Vue.js Style Widget
 <div align="center">
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/vue_card.gif" width="300" alt="Vue Style Card"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/vue_card.gif" width="300" alt="Vue Style Card"/>
 </div>
 
 ```dart
@@ -137,7 +137,7 @@ CreditCardWidgetVue(
 
 #### 2. Ultimate Widget with Advanced Features
 <div align="center">
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/ultimate_card.gif" width="300" alt="Ultimate Card"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/ultimate_card.gif" width="300" alt="Ultimate Card"/>
 </div>
 
 ```dart
@@ -156,7 +156,7 @@ CreditCardWidgetUltimate(
 
 #### 3. Perfect Performance Widget
 <div align="center">
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/perfect_card.gif" width="300" alt="Perfect Card"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/perfect_card.gif" width="300" alt="Perfect Card"/>
 </div>
 
 ```dart
@@ -176,7 +176,7 @@ CreditCardWidgetPerfect(
 
 #### 1. Ultimate Form with Validation
 <div align="center">
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/form_ultimate.gif" width="300" alt="Ultimate Form"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/form_ultimate.gif" width="300" alt="Ultimate Form"/>
 </div>
 
 ```dart
@@ -211,7 +211,7 @@ CreditCardFormUltimate(
 
 #### 2. Standard Form
 <div align="center">
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/form_standard.gif" width="300" alt="Standard Form"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/form_standard.gif" width="300" alt="Standard Form"/>
 </div>
 
 ```dart
@@ -234,7 +234,7 @@ CreditCardForm(
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:animated_payment_card/animated_payment_card.dart';
 
 class CreditCardPage extends StatefulWidget {
   @override
@@ -344,14 +344,14 @@ class _CreditCardPageState extends State<CreditCardPage> {
 The package automatically detects and supports:
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/visa.png" width="60" alt="Visa"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/mastercard.png" width="60" alt="Mastercard"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/amex.png" width="60" alt="American Express"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/discover.png" width="60" alt="Discover"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/jcb.png" width="60" alt="JCB"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/dinersclub.png" width="60" alt="Diners Club"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/unionpay.png" width="60" alt="UnionPay"/>
-  <img src="https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/main/assets/images/troy.png" width="60" alt="Troy"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/visa.png" width="60" alt="Visa"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/mastercard.png" width="60" alt="Mastercard"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/amex.png" width="60" alt="American Express"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/discover.png" width="60" alt="Discover"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/jcb.png" width="60" alt="JCB"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/dinersclub.png" width="60" alt="Diners Club"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/unionpay.png" width="60" alt="UnionPay"/>
+  <img src="https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/main/assets/images/troy.png" width="60" alt="Troy"/>
 </div>
 
 - **Visa**: 4xxx xxxx xxxx xxxx
@@ -604,7 +604,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support ❤️
 
-If you find this package helpful, please give it a ⭐️ on [GitHub](https://github.com/jamalihassan0307/flutter_credit_card)!
+If you find this package helpful, please give it a ⭐️ on [GitHub](https://github.com/jamalihassan0307/animated_payment_card)!
 
 For issues, feature requests, or questions, please file an issue on the GitHub repository.
 

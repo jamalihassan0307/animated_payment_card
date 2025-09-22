@@ -40,8 +40,8 @@ The original implementation had layout overflow errors and didn't match the Vue.
 ## 🔧 Usage
 
 ```dart
-import 'package:flutter_credit_card/src/credit_card_widget_new.dart' as new_widget;
-import 'package:flutter_credit_card/src/credit_card_form_new.dart' as new_form;
+import 'package:animated_payment_card/src/credit_card_widget_new.dart' as new_widget;
+import 'package:animated_payment_card/src/credit_card_form_new.dart' as new_form;
 
 // Use the improved widgets
 new_widget.CreditCardWidget(

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:animated_payment_card/animated_payment_card.dart';
 
 void main() {
   group('CreditCardUtils Tests', () {
@@ -149,9 +149,9 @@ void main() {
     });
 
     test('should return correct asset paths', () {
-      expect(CreditCardBrand.visa.assetPath, 'packages/flutter_credit_card/assets/images/visa.png');
-      expect(CreditCardBrand.mastercard.assetPath, 'packages/flutter_credit_card/assets/images/mastercard.png');
-      expect(CreditCardBrand.americanExpress.assetPath, 'packages/flutter_credit_card/assets/images/amex.png');
+      expect(CreditCardBrand.visa.assetPath, 'packages/animated_payment_card/assets/images/visa.png');
+      expect(CreditCardBrand.mastercard.assetPath, 'packages/animated_payment_card/assets/images/mastercard.png');
+      expect(CreditCardBrand.americanExpress.assetPath, 'packages/animated_payment_card/assets/images/amex.png');
     });
   });
 }

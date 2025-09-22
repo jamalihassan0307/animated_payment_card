@@ -53,31 +53,31 @@ extension CreditCardBrandExtension on CreditCardBrand {
   String get assetPath {
     switch (this) {
       case CreditCardBrand.visa:
-        return 'packages/flutter_credit_card/assets/images/visa.png';
+        return 'packages/animated_payment_card/assets/images/visa.png';
       case CreditCardBrand.mastercard:
-        return 'packages/flutter_credit_card/assets/images/mastercard.png';
+        return 'packages/animated_payment_card/assets/images/mastercard.png';
       case CreditCardBrand.americanExpress:
-        return 'packages/flutter_credit_card/assets/images/amex.png';
+        return 'packages/animated_payment_card/assets/images/amex.png';
       case CreditCardBrand.discover:
-        return 'packages/flutter_credit_card/assets/images/discover.png';
+        return 'packages/animated_payment_card/assets/images/discover.png';
       case CreditCardBrand.dinersClub:
-        return 'packages/flutter_credit_card/assets/images/diners_club.png';
+        return 'packages/animated_payment_card/assets/images/diners_club.png';
       case CreditCardBrand.jcb:
-        return 'packages/flutter_credit_card/assets/images/jcb.png';
+        return 'packages/animated_payment_card/assets/images/jcb.png';
       case CreditCardBrand.unionPay:
-        return 'packages/flutter_credit_card/assets/images/unionpay.png';
+        return 'packages/animated_payment_card/assets/images/unionpay.png';
       case CreditCardBrand.maestro:
-        return 'packages/flutter_credit_card/assets/images/maestro.png';
+        return 'packages/animated_payment_card/assets/images/maestro.png';
       case CreditCardBrand.elo:
-        return 'packages/flutter_credit_card/assets/images/elo.png';
+        return 'packages/animated_payment_card/assets/images/elo.png';
       case CreditCardBrand.mir:
-        return 'packages/flutter_credit_card/assets/images/mir.png';
+        return 'packages/animated_payment_card/assets/images/mir.png';
       case CreditCardBrand.hiper:
-        return 'packages/flutter_credit_card/assets/images/hiper.png';
+        return 'packages/animated_payment_card/assets/images/hiper.png';
       case CreditCardBrand.hipercard:
-        return 'packages/flutter_credit_card/assets/images/hipercard.png';
+        return 'packages/animated_payment_card/assets/images/hipercard.png';
       case CreditCardBrand.unknown:
-        return 'packages/flutter_credit_card/assets/images/unknown.png';
+        return 'packages/animated_payment_card/assets/images/unknown.png';
     }
   }
 }

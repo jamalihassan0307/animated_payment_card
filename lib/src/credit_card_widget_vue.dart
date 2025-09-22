@@ -315,7 +315,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
           children: [
             // Background image
             Image.network(
-              'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/$_currentBackgroundIndex.jpeg',
+              'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/$_currentBackgroundIndex.jpeg',
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
@@ -452,7 +452,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
             borderRadius: BorderRadius.circular(4),
           ),
           child: Image.network(
-            'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/chip.png',
+            'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/chip.png',
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) => Container(
               color: Colors.amber,
@@ -846,28 +846,28 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
 
     switch (cardType) {
       case CreditCardBrand.visa:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/visa.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/visa.png';
         break;
       case CreditCardBrand.mastercard:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/mastercard.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/mastercard.png';
         break;
       case CreditCardBrand.americanExpress:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/amex.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/amex.png';
         break;
       case CreditCardBrand.discover:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/discover.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/discover.png';
         break;
       case CreditCardBrand.jcb:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/jcb.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/jcb.png';
         break;
       case CreditCardBrand.unionPay:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/unionpay.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/unionpay.png';
         break;
       case CreditCardBrand.dinersClub:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/dinersclub.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/dinersclub.png';
         break;
       default:
-        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/flutter_credit_card/blob/main/assets/images/visa.png';
+        iconUrl = 'https://raw.githubusercontent.com/jamalihassan0307/animated_payment_card/blob/main/assets/images/visa.png';
     }
 
     return Image.network(
