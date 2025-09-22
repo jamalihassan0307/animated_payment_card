@@ -2,6 +2,7 @@ export 'src/credit_card_widget.dart';
 export 'src/credit_card_widget_new.dart' hide CreditCardWidget;
 export 'src/credit_card_widget_perfect.dart' hide Glassmorphism;
 export 'src/credit_card_widget_ultimate.dart';
+export 'src/credit_card_widget_vue.dart';
 export 'src/credit_card_form.dart';
 export 'src/credit_card_form_perfect.dart' hide CardNumberInputFormatter;
 export 'src/credit_card_form_ultimate.dart';

@@ -355,7 +355,9 @@ class _CreditCardWidgetUltimateState extends State<CreditCardWidgetUltimate>
     final isSmall = cardHeight < 200;
     final padding = isSmall ? 15.0 : 25.0;
     
-    return Padding(
+    return Container(
+      width: cardWidth,
+      height: cardHeight,
       padding: EdgeInsets.all(padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,12 +365,13 @@ class _CreditCardWidgetUltimateState extends State<CreditCardWidgetUltimate>
           // Top row with chip and brand
           _buildTopRow(isSmall),
           
-          SizedBox(height: isSmall ? 15 : 40),
-          
-          // Card number
-          _buildCardNumber(isSmall),
-          
-          const Spacer(),
+          // Flexible space for card number
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: _buildCardNumber(isSmall),
+            ),
+          ),
           
           // Bottom row with holder name and expiry
           _buildBottomRow(isSmall),
@@ -544,83 +547,91 @@ class _CreditCardWidgetUltimateState extends State<CreditCardWidgetUltimate>
 
   Widget _buildBackContent(double cardWidth, double cardHeight) {
     final isSmall = cardHeight < 200;
-    final stripeHeight = isSmall ? 40.0 : 50.0;
-    final stripeMargin = isSmall ? 20.0 : 30.0;
+    final stripeHeight = isSmall ? 30.0 : 50.0;
+    final stripeMargin = isSmall ? 15.0 : 30.0;
     
-    return Column(
-      children: [
-        // Magnetic stripe
-        Container(
-          width: double.infinity,
-          height: stripeHeight,
-          margin: EdgeInsets.only(top: stripeMargin),
-          color: const Color.fromRGBO(0, 0, 19, 0.8),
-        ),
-        
-        const Spacer(),
-        
-        // CVV section
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            children: [
-              const Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Text(
-                    'CVV',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+    return Container(
+      width: cardWidth,
+      height: cardHeight,
+      child: Column(
+        children: [
+          // Magnetic stripe
+          Container(
+            width: double.infinity,
+            height: stripeHeight,
+            margin: EdgeInsets.only(top: stripeMargin),
+            color: const Color.fromRGBO(0, 0, 19, 0.8),
+          ),
+          
+          // Flexible space
+          Expanded(
+            child: Container(),
+          ),
+          
+          // CVV section
+          Container(
+            padding: EdgeInsets.all(isSmall ? 10 : 15),
+            child: Row(
+              children: [
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'CVV',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: isSmall ? 12 : 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    height: isSmall ? 35 : 45,
-                    width: isSmall ? 100 : 120,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(32, 56, 117, 0.35),
-                          offset: Offset(0, 10),
-                          blurRadius: 20,
-                          spreadRadius: -7,
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        widget.obscureCardCvv 
-                            ? '*' * widget.cvvCode.length
-                            : widget.cvvCode,
-                        style: const TextStyle(
-                          color: Color(0xFF1a3b5d),
-                          fontSize: 18,
+                    const SizedBox(height: 5),
+                    Container(
+                      height: isSmall ? 30 : 45,
+                      width: isSmall ? 80 : 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(32, 56, 117, 0.35),
+                            offset: Offset(0, 10),
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                          ),
+                        ],
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          widget.obscureCardCvv 
+                              ? '*' * widget.cvvCode.length
+                              : widget.cvvCode,
+                          style: TextStyle(
+                            color: const Color(0xFF1a3b5d),
+                            fontSize: isSmall ? 14 : 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  // Card brand on back
-                  SizedBox(
-                    height: 30,
-                    child: Opacity(
-                      opacity: 0.7,
-                      child: _buildCardTypeIcon(),
+                    SizedBox(height: isSmall ? 15 : 30),
+                    // Card brand on back
+                    SizedBox(
+                      height: isSmall ? 20 : 30,
+                      child: Opacity(
+                        opacity: 0.7,
+                        child: _buildCardTypeIcon(),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

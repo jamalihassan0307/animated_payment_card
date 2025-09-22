@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/src/credit_card_widget_ultimate.dart';
+import 'package:flutter_credit_card/src/credit_card_widget_vue.dart';
 import 'package:flutter_credit_card/src/credit_card_form_ultimate.dart';
 import 'package:flutter_credit_card/src/credit_card_model.dart';
 
@@ -13,31 +13,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Credit Card Ultimate Demo',
-      theme: ThemeData(
-        fontFamily: 'Source Sans Pro',
-        useMaterial3: false,
-      ),
-      home: const CreditCardUltimateDemo(),
+      title: 'Flutter Credit Card Vue Demo',
+      theme: ThemeData(fontFamily: 'Source Sans Pro', useMaterial3: false),
+      home: const CreditCardVueDemo(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class CreditCardUltimateDemo extends StatefulWidget {
-  const CreditCardUltimateDemo({super.key});
+class CreditCardVueDemo extends StatefulWidget {
+  const CreditCardVueDemo({super.key});
 
   @override
-  State<CreditCardUltimateDemo> createState() => _CreditCardUltimateDemoState();
+  State<CreditCardVueDemo> createState() => _CreditCardVueDemoState();
 }
 
-class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
+class _CreditCardVueDemoState extends State<CreditCardVueDemo> {
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
-  String? focusedInputType;
+  String? focusedField;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   void onCreditCardModelChange(CreditCardModel creditCardModel) {
@@ -50,9 +47,9 @@ class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
     });
   }
 
-  void onFocusChange(String? inputType) {
+  void onFocusChange(String? field) {
     setState(() {
-      focusedInputType = inputType;
+      focusedField = field;
     });
   }
 
@@ -68,75 +65,58 @@ class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight,
                 ),
-                child: Column(
-                  children: [
-                    // Wrapper similar to Vue.js design
-                    Container(
-                      constraints: const BoxConstraints(maxWidth: 570),
-                      margin: EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth > 700 ? 50 : 15,
-                        vertical: 50,
-                      ),
-                      child: Column(
-                        children: [
-                          // Card list container
-                          Container(
-                            margin: EdgeInsets.only(
-                              bottom: constraints.maxWidth > 700 ? -130 : -120,
-                            ),
-                            child: CreditCardWidgetUltimate(
-                              cardNumber: cardNumber,
-                              expiryDate: expiryDate,
-                              cardHolderName: cardHolderName,
-                              cvvCode: cvvCode,
-                              showBackView: isCvvFocused,
-                              obscureCardNumber: true,
-                              obscureCardCvv: true,
-                              isHolderNameVisible: true,
-                              animationDuration: const Duration(milliseconds: 800),
-                              focusedInputType: focusedInputType,
-                            ),
+                padding: const EdgeInsets.all(50),
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 570),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Card list - matches Vue.js structure
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 50),
+                          child: CreditCardWidgetVue(
+                            cardNumber: cardNumber,
+                            expiryDate: expiryDate,
+                            cardHolderName: cardHolderName,
+                            cvvCode: cvvCode,
+                            showBackView: isCvvFocused,
+                            focusedField: focusedField,
+                            isCardNumberMasked: true,
+                            animationDuration: const Duration(milliseconds: 800),
                           ),
-                          
-                          // Form container with proper top padding
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: constraints.maxWidth > 700 ? 180 : 165,
-                            ),
-                            child: CreditCardFormUltimate(
-                              formKey: formKey,
-                              cardNumber: cardNumber,
-                              cvvCode: cvvCode,
-                              cardHolderName: cardHolderName,
-                              expiryDate: expiryDate,
-                              onCreditCardModelChange: onCreditCardModelChange,
-                              onFocusChange: onFocusChange,
-                              obscureNumber: false,
-                              obscureCvv: true,
-                              isHolderNameVisible: true,
-                              isCardNumberVisible: true,
-                              isExpiryDateVisible: true,
-                              isCvvVisible: true,
-                              enableCardNumberMasking: true,
-                              onFormComplete: () {
-                                if (formKey.currentState!.validate()) {
-                                  _showSuccessDialog();
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+
+                        // Form inner - matches Vue.js structure
+                        CreditCardFormUltimate(
+                          formKey: formKey,
+                          cardNumber: cardNumber,
+                          cvvCode: cvvCode,
+                          cardHolderName: cardHolderName,
+                          expiryDate: expiryDate,
+                          onCreditCardModelChange: onCreditCardModelChange,
+                          onFocusChange: onFocusChange,
+                          obscureNumber: false,
+                          obscureCvv: true,
+                          isHolderNameVisible: true,
+                          isCardNumberVisible: true,
+                          isExpiryDateVisible: true,
+                          isCvvVisible: true,
+                          enableCardNumberMasking: true,
+                          onFormComplete: () {
+                            if (formKey.currentState!.validate()) {
+                              _showSuccessDialog();
+                            }
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // GitHub button
+                        _buildGitHubButton(),
+                      ],
                     ),
-                    
-                    // GitHub button (optional)
-                    if (constraints.maxWidth > 700)
-                      Positioned(
-                        bottom: 50,
-                        right: 40,
-                        child: _buildGitHubButton(),
-                      ),
-                  ],
+                  ),
                 ),
               ),
             );
@@ -147,29 +127,24 @@ class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
   }
 
   Widget _buildGitHubButton() {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: ElevatedButton(
-        onPressed: () {
-          // Open GitHub repository
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF24292e),
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
-          elevation: 6,
-          shadowColor: const Color.fromRGBO(36, 52, 70, 0.65),
-        ),
-        child: const Text(
-          'See on GitHub',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1,
-            fontSize: 16,
-          ),
+    return ElevatedButton(
+      onPressed: () {
+        // Open GitHub repository
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF24292e),
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        elevation: 6,
+        shadowColor: const Color.fromRGBO(36, 52, 70, 0.65),
+      ),
+      child: const Text(
+        'See on GitHub',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1,
+          fontSize: 16,
         ),
       ),
     );
@@ -193,11 +168,7 @@ class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 64,
-              ),
+              const Icon(Icons.check_circle, color: Colors.green, size: 64),
               const SizedBox(height: 16),
               const Text(
                 'Your card details have been validated successfully.',
@@ -225,9 +196,7 @@ class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
               ),
               child: const Text(
                 'OK',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ],
