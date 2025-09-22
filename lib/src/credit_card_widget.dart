@@ -30,7 +30,7 @@ class CreditCardWidget extends StatefulWidget {
   final Border? backCardBorder;
 
   const CreditCardWidget({
-    Key? key,
+    super.key,
     required this.cardNumber,
     required this.expiryDate,
     required this.cardHolderName,
@@ -54,7 +54,7 @@ class CreditCardWidget extends StatefulWidget {
     this.customCardTypeIcons = const {},
     this.frontCardBorder,
     this.backCardBorder,
-  }) : super(key: key);
+  });
 
   @override
   State<CreditCardWidget> createState() => _CreditCardWidgetState();
@@ -120,6 +120,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+
       height: widget.height,
       width: widget.width,
       child: AnimatedBuilder(
@@ -155,6 +156,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
               end: Alignment.bottomRight,
               colors: [
                 widget.cardBgColor,
+                // ignore: deprecated_member_use
                 widget.cardBgColor.withOpacity(0.8),
               ],
             ),
@@ -231,7 +233,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
               end: Alignment.bottomRight,
               colors: [
                 widget.cardBgColor,
-                widget.cardBgColor.withOpacity(0.8),
+                widget.cardBgColor.withValues(alpha: 0.8),
               ],
             ),
       ),

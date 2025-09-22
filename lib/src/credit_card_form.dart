@@ -31,7 +31,7 @@ class CreditCardForm extends StatefulWidget {
   final void Function()? onFormComplete;
 
   const CreditCardForm({
-    Key? key,
+    super.key,
     this.formKey,
     required this.cardNumber,
     required this.expiryDate,
@@ -55,7 +55,7 @@ class CreditCardForm extends StatefulWidget {
     this.cardHolderDecoration,
     this.textStyle,
     this.onFormComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<CreditCardForm> createState() => _CreditCardFormState();
