@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'credit_card_model.dart';
 import 'credit_card_brand.dart';
 import 'utils/credit_card_utils.dart';
 
