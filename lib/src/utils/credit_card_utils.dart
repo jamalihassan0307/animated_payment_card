@@ -63,26 +63,23 @@ class CreditCardUtils {
 
     if (brand == CreditCardBrand.americanExpress) {
       // American Express format: #### ###### #####
-      return cleanNumber
-          .replaceAllMapped(RegExp(r'(\d{4})(\d{6})(\d{5})'), (match) {
-        return '${match.group(1)} ${match.group(2)} ${match.group(3)}';
-      }).replaceAllMapped(RegExp(r'(\d{4})(\d{6})(\d{1,4})'), (match) {
-        return '${match.group(1)} ${match.group(2)} ${match.group(3)}';
-      }).replaceAllMapped(RegExp(r'(\d{4})(\d{1,6})'), (match) {
-        return '${match.group(1)} ${match.group(2)}';
-      });
+      if (cleanNumber.length <= 4) {
+        return cleanNumber;
+      } else if (cleanNumber.length <= 10) {
+        return '${cleanNumber.substring(0, 4)} ${cleanNumber.substring(4)}';
+      } else {
+        return '${cleanNumber.substring(0, 4)} ${cleanNumber.substring(4, 10)} ${cleanNumber.substring(10)}';
+      }
     } else {
       // Standard format: #### #### #### ####
-      return cleanNumber
-          .replaceAllMapped(RegExp(r'(\d{4})(\d{4})(\d{4})(\d{4})'), (match) {
-        return '${match.group(1)} ${match.group(2)} ${match.group(3)} ${match.group(4)}';
-      }).replaceAllMapped(RegExp(r'(\d{4})(\d{4})(\d{4})(\d{1,4})'), (match) {
-        return '${match.group(1)} ${match.group(2)} ${match.group(3)} ${match.group(4)}';
-      }).replaceAllMapped(RegExp(r'(\d{4})(\d{4})(\d{1,4})'), (match) {
-        return '${match.group(1)} ${match.group(2)} ${match.group(3)}';
-      }).replaceAllMapped(RegExp(r'(\d{4})(\d{1,4})'), (match) {
-        return '${match.group(1)} ${match.group(2)}';
-      });
+      final buffer = StringBuffer();
+      for (int i = 0; i < cleanNumber.length; i++) {
+        if (i != 0 && i % 4 == 0) {
+          buffer.write(' ');
+        }
+        buffer.write(cleanNumber[i]);
+      }
+      return buffer.toString();
     }
   }
 
@@ -173,8 +170,31 @@ class CreditCardUtils {
     if (cleanNumber.length < 4) return cleanNumber;
 
     String lastFour = cleanNumber.substring(cleanNumber.length - 4);
-    String masked = '*' * (cleanNumber.length - 4) + lastFour;
-
-    return formatCardNumber(masked, detectCardBrand(cardNumber));
+    int maskedLength = cleanNumber.length - 4;
+    
+    // Create masked string with proper formatting
+    if (maskedLength <= 0) return lastFour;
+    
+    String masked = '${'*' * maskedLength}$lastFour';
+    
+    // Apply formatting based on card brand
+    CreditCardBrand brand = detectCardBrand(cardNumber);
+    if (brand == CreditCardBrand.americanExpress) {
+      // Format as: **** ****** *1111
+      if (masked.length >= 15) {
+        return '${masked.substring(0, 4)} ${masked.substring(4, 10)} ${masked.substring(10)}';
+      }
+    }
+    
+    // Standard format: **** **** **** 1111
+    final buffer = StringBuffer();
+    for (int i = 0; i < masked.length; i++) {
+      if (i != 0 && i % 4 == 0) {
+        buffer.write(' ');
+      }
+      buffer.write(masked[i]);
+    }
+    
+    return buffer.toString();
   }
 }
