@@ -629,7 +629,7 @@ class _CreditCardFormUltimateState extends State<CreditCardFormUltimate> {
   }
 }
 
-/// Input formatter for card number with proper spacing
+/// Input formatter for card number with proper spacing and length limit
 class CardNumberInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -638,7 +638,8 @@ class CardNumberInputFormatter extends TextInputFormatter {
   ) {
     final text = newValue.text.replaceAll(RegExp(r'\s+'), '');
     
-    if (text.length > 19) {
+    // Limit to 16 digits maximum
+    if (text.length > 16) {
       return oldValue;
     }
     

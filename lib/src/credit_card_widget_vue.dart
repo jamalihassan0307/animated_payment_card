@@ -35,10 +35,17 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     with TickerProviderStateMixin {
   late AnimationController _flipController;
   late AnimationController _focusController;
+  late AnimationController _numberController;
+  late AnimationController _slideController;
+  
   late Animation<double> _flipAnimation;
   late Animation<double> _focusAnimation;
+  late Animation<double> _numberFadeAnimation;
+  late Animation<Offset> _slideUpAnimation;
+  late Animation<Offset> _slideDownAnimation;
 
   int _currentBackgroundIndex = 1;
+  String _previousCardNumber = '';
 
   @override
   void initState() {
@@ -51,6 +58,16 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
 
     _focusController = AnimationController(
       duration: const Duration(milliseconds: 350),
+      vsync: this,
+    );
+
+    _numberController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+
+    _slideController = AnimationController(
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
@@ -67,10 +84,35 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _focusController,
-      curve: Curves.easeInOut,
+      curve: Curves.elasticOut,
+    ));
+
+    _numberFadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _numberController,
+      curve: Curves.easeInOutCubic,
+    ));
+
+    _slideUpAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.5),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _slideController,
+      curve: Curves.elasticOut,
+    ));
+
+    _slideDownAnimation = Tween<Offset>(
+      begin: const Offset(0, -0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _slideController,
+      curve: Curves.bounceOut,
     ));
 
     _currentBackgroundIndex = DateTime.now().millisecond % 25 + 1;
+    _previousCardNumber = widget.cardNumber;
   }
 
   @override
@@ -88,9 +130,19 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     if (widget.focusedField != oldWidget.focusedField) {
       if (widget.focusedField != null && widget.focusedField!.isNotEmpty) {
         _focusController.forward();
+        _slideController.forward();
       } else {
         _focusController.reverse();
+        _slideController.reverse();
       }
+    }
+
+    // Animate when card number changes
+    if (widget.cardNumber != oldWidget.cardNumber) {
+      _numberController.forward().then((_) {
+        _numberController.reverse();
+      });
+      _previousCardNumber = oldWidget.cardNumber;
     }
   }
 
@@ -98,6 +150,8 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
   void dispose() {
     _flipController.dispose();
     _focusController.dispose();
+    _numberController.dispose();
+    _slideController.dispose();
     super.dispose();
   }
 
@@ -346,123 +400,24 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     final fontSize = isSmall ? 19.0 : 27.0;
     final letterSpacing = isSmall ? 1.5 : 2.0;
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 250),
-      transitionBuilder: (child, animation) {
-        return SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 0.15),
-            end: Offset.zero,
-          ).animate(animation),
-          child: FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
-      },
-      child: Text(
-        _formatCardNumber(),
-        key: ValueKey(widget.cardNumber),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: fontSize,
-          fontWeight: FontWeight.w500,
-          letterSpacing: letterSpacing,
-          fontFamily: 'Source Code Pro',
-          height: 1.4,
-          shadows: const [
-            Shadow(
-              offset: Offset(7, 6),
-              blurRadius: 10,
-              color: Color.fromRGBO(14, 42, 90, 0.8),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomContent(bool isSmall) {
-    final smallFontSize = isSmall ? 10.0 : 13.0;
-    final largeFontSize = isSmall ? 14.0 : 18.0;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        // Card holder info
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Card Holder',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
-                  fontSize: smallFontSize,
-                  letterSpacing: 0.3,
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 6),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                transitionBuilder: (child, animation) {
-                  return SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 0.5),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    ),
-                  );
-                },
-                child: Text(
-                  widget.cardHolderName.isEmpty
-                      ? 'FULL NAME'
-                      : widget.cardHolderName.toUpperCase(),
-                  key: ValueKey(widget.cardHolderName),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: largeFontSize,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.3,
-                    height: 1.4,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(width: 20),
-
-        // Expiry date
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Expires',
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.7),
-                fontSize: smallFontSize,
-                letterSpacing: 0.3,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 6),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
+    return AnimatedBuilder(
+      animation: Listenable.merge([_numberController, _slideController]),
+      builder: (context, child) {
+        return Transform.translate(
+          offset: _slideUpAnimation.value * (_slideController.value),
+          child: Transform.scale(
+            scale: 1.0 + (_numberFadeAnimation.value * 0.05),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 400),
               transitionBuilder: (child, animation) {
                 return SlideTransition(
                   position: Tween<Offset>(
-                    begin: const Offset(0, 0.5),
+                    begin: const Offset(0, 0.2),
                     end: Offset.zero,
-                  ).animate(animation),
+                  ).animate(CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.elasticOut,
+                  )),
                   child: FadeTransition(
                     opacity: animation,
                     child: child,
@@ -470,20 +425,147 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
                 );
               },
               child: Text(
-                widget.expiryDate.isEmpty ? 'MM/YY' : widget.expiryDate,
-                key: ValueKey(widget.expiryDate),
+                _formatCardNumber(),
+                key: ValueKey(_formatCardNumber()),
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: largeFontSize,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.w500,
-                  letterSpacing: 0.3,
+                  letterSpacing: letterSpacing,
+                  fontFamily: 'Source Code Pro',
                   height: 1.4,
+                  shadows: [
+                    Shadow(
+                      offset: const Offset(7, 6),
+                      blurRadius: 10 + (_numberFadeAnimation.value * 5),
+                      color: Color.fromRGBO(14, 42, 90, 0.8 + (_numberFadeAnimation.value * 0.2)),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomContent(bool isSmall) {
+    final smallFontSize = isSmall ? 10.0 : 13.0;
+    final largeFontSize = isSmall ? 14.0 : 18.0;
+
+    return AnimatedBuilder(
+      animation: _slideController,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: _slideDownAnimation.value * _slideController.value,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Card holder info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Card Holder',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: smallFontSize,
+                        letterSpacing: 0.3,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 350),
+                      transitionBuilder: (child, animation) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(-0.3, 0),
+                            end: Offset.zero,
+                          ).animate(CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.elasticOut,
+                          )),
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        widget.cardHolderName.isEmpty
+                            ? 'FULL NAME'
+                            : widget.cardHolderName.toUpperCase(),
+                        key: ValueKey(widget.cardHolderName),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: largeFontSize,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.3,
+                          height: 1.4,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 20),
+
+              // Expiry date
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Expires',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: smallFontSize,
+                      letterSpacing: 0.3,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    transitionBuilder: (child, animation) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0.3, 0),
+                          end: Offset.zero,
+                        ).animate(CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.elasticOut,
+                        )),
+                        child: FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      widget.expiryDate.isEmpty ? 'MM/YY' : widget.expiryDate,
+                      key: ValueKey(widget.expiryDate),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: largeFontSize,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.3,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -544,10 +626,13 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        '*' * widget.cvvCode.length,
+                        widget.cvvCode.isEmpty 
+                            ? '' 
+                            : '*' * widget.cvvCode.length.clamp(0, 4),
                         style: TextStyle(
                           color: const Color(0xFF1a3b5d),
                           fontSize: isSmall ? 14.0 : 18.0,
+                          letterSpacing: 2.0,
                         ),
                       ),
                     ),
@@ -632,8 +717,14 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
   }
 
   String _formatCardNumber() {
-    final number = widget.cardNumber.replaceAll(RegExp(r'\s+'), '');
+    final cleanNumber = widget.cardNumber.replaceAll(RegExp(r'\s+'), '');
     final cardType = _getCardType();
+
+    // Limit to 16 digits for standard cards, 15 for Amex
+    final maxLength = cardType == CreditCardBrand.americanExpress ? 15 : 16;
+    final limitedNumber = cleanNumber.length > maxLength 
+        ? cleanNumber.substring(0, maxLength) 
+        : cleanNumber;
 
     String placeholder;
     if (cardType == CreditCardBrand.americanExpress) {
@@ -644,31 +735,80 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
       placeholder = '#### #### #### ####';
     }
 
+    // If number is too short, just show what's typed with placeholder
+    if (limitedNumber.length <= 4) {
+      return _buildWithPlaceholder(limitedNumber, placeholder);
+    }
+
+    // For masking: show first 4, mask middle, show last 4
+    if (widget.isCardNumberMasked && limitedNumber.length > 8) {
+      return _buildMaskedNumber(limitedNumber, cardType);
+    }
+
+    // Show full number formatted
+    return _buildFormattedNumber(limitedNumber, cardType);
+  }
+
+  String _buildWithPlaceholder(String number, String placeholder) {
     final result = StringBuffer();
     int numberIndex = 0;
 
     for (int i = 0; i < placeholder.length; i++) {
       final char = placeholder[i];
-      
       if (char == '#') {
         if (numberIndex < number.length) {
-          // Show the actual number
-          final shouldMask = widget.isCardNumberMasked && 
-                           numberIndex > 4 && 
-                           numberIndex < number.length - 4;
-          
-          result.write(shouldMask ? '*' : number[numberIndex]);
+          result.write(number[numberIndex]);
           numberIndex++;
         } else {
-          // Show placeholder
-          result.write(char);
+          result.write('#');
         }
       } else {
-        // Space or other characters
         result.write(char);
       }
     }
-
     return result.toString();
+  }
+
+  String _buildMaskedNumber(String number, CreditCardBrand cardType) {
+    if (cardType == CreditCardBrand.americanExpress) {
+      // Amex: 4-6-5 format
+      final first4 = number.substring(0, 4);
+      final last5 = number.length >= 5 ? number.substring(number.length - 5) : '';
+      final middleStars = '*' * (number.length - 9).clamp(0, 6);
+      
+      if (number.length <= 4) return first4;
+      if (number.length <= 10) return '$first4 $middleStars';
+      return '$first4 $middleStars $last5';
+    } else {
+      // Standard: 4-4-4-4 format
+      final first4 = number.substring(0, 4);
+      final last4 = number.length >= 4 ? number.substring(number.length - 4) : '';
+      final middleStars = '*' * (number.length - 8).clamp(0, 8);
+      
+      if (number.length <= 4) return first4;
+      if (number.length <= 8) return '$first4 $middleStars';
+      
+      // Format: 1234 **** 5678
+      return '$first4 $middleStars $last4';
+    }
+  }
+
+  String _buildFormattedNumber(String number, CreditCardBrand cardType) {
+    if (cardType == CreditCardBrand.americanExpress) {
+      // Amex format: 4-6-5
+      if (number.length <= 4) return number;
+      if (number.length <= 10) return '${number.substring(0, 4)} ${number.substring(4)}';
+      return '${number.substring(0, 4)} ${number.substring(4, 10)} ${number.substring(10)}';
+    } else {
+      // Standard format: 4-4-4-4
+      final result = StringBuffer();
+      for (int i = 0; i < number.length; i++) {
+        if (i > 0 && i % 4 == 0) {
+          result.write(' ');
+        }
+        result.write(number[i]);
+      }
+      return result.toString();
+    }
   }
 }
