@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/src/credit_card_widget_perfect.dart';
-import 'package:flutter_credit_card/src/credit_card_form_perfect.dart';
+import 'package:flutter_credit_card/src/credit_card_widget_ultimate.dart';
+import 'package:flutter_credit_card/src/credit_card_form_ultimate.dart';
 import 'package:flutter_credit_card/src/credit_card_model.dart';
 
 void main() {
@@ -13,30 +13,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Credit Card Perfect Demo',
+      title: 'Flutter Credit Card Ultimate Demo',
       theme: ThemeData(
-        useMaterial3: true,
         fontFamily: 'Source Sans Pro',
+        useMaterial3: false,
       ),
-      home: const CreditCardPerfectDemo(),
+      home: const CreditCardUltimateDemo(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class CreditCardPerfectDemo extends StatefulWidget {
-  const CreditCardPerfectDemo({super.key});
+class CreditCardUltimateDemo extends StatefulWidget {
+  const CreditCardUltimateDemo({super.key});
 
   @override
-  State<CreditCardPerfectDemo> createState() => _CreditCardPerfectDemoState();
+  State<CreditCardUltimateDemo> createState() => _CreditCardUltimateDemoState();
 }
 
-class _CreditCardPerfectDemoState extends State<CreditCardPerfectDemo> {
+class _CreditCardUltimateDemoState extends State<CreditCardUltimateDemo> {
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
+  String? focusedInputType;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   void onCreditCardModelChange(CreditCardModel creditCardModel) {
@@ -49,6 +50,12 @@ class _CreditCardPerfectDemoState extends State<CreditCardPerfectDemo> {
     });
   }
 
+  void onFocusChange(String? inputType) {
+    setState(() {
+      focusedInputType = inputType;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,128 +63,115 @@ class _CreditCardPerfectDemoState extends State<CreditCardPerfectDemo> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Responsive layout that adapts to screen size
-            if (constraints.maxWidth > 700) {
-              return _buildDesktopLayout();
-            } else {
-              return _buildMobileLayout();
-            }
+            return SingleChildScrollView(
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Column(
+                  children: [
+                    // Wrapper similar to Vue.js design
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 570),
+                      margin: EdgeInsets.symmetric(
+                        horizontal: constraints.maxWidth > 700 ? 50 : 15,
+                        vertical: 50,
+                      ),
+                      child: Column(
+                        children: [
+                          // Card list container
+                          Container(
+                            margin: EdgeInsets.only(
+                              bottom: constraints.maxWidth > 700 ? -130 : -120,
+                            ),
+                            child: CreditCardWidgetUltimate(
+                              cardNumber: cardNumber,
+                              expiryDate: expiryDate,
+                              cardHolderName: cardHolderName,
+                              cvvCode: cvvCode,
+                              showBackView: isCvvFocused,
+                              obscureCardNumber: true,
+                              obscureCardCvv: true,
+                              isHolderNameVisible: true,
+                              animationDuration: const Duration(milliseconds: 800),
+                              focusedInputType: focusedInputType,
+                            ),
+                          ),
+                          
+                          // Form container with proper top padding
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: constraints.maxWidth > 700 ? 180 : 165,
+                            ),
+                            child: CreditCardFormUltimate(
+                              formKey: formKey,
+                              cardNumber: cardNumber,
+                              cvvCode: cvvCode,
+                              cardHolderName: cardHolderName,
+                              expiryDate: expiryDate,
+                              onCreditCardModelChange: onCreditCardModelChange,
+                              onFocusChange: onFocusChange,
+                              obscureNumber: false,
+                              obscureCvv: true,
+                              isHolderNameVisible: true,
+                              isCardNumberVisible: true,
+                              isExpiryDateVisible: true,
+                              isCvvVisible: true,
+                              enableCardNumberMasking: true,
+                              onFormComplete: () {
+                                if (formKey.currentState!.validate()) {
+                                  _showSuccessDialog();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    // GitHub button (optional)
+                    if (constraints.maxWidth > 700)
+                      Positioned(
+                        bottom: 50,
+                        right: 40,
+                        child: _buildGitHubButton(),
+                      ),
+                  ],
+                ),
+              ),
+            );
           },
         ),
       ),
     );
   }
 
-  Widget _buildDesktopLayout() {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 570),
-        margin: const EdgeInsets.all(50),
-        child: Column(
-          children: [
-            // Credit card widget
-            Container(
-              margin: const EdgeInsets.only(bottom: -130),
-              child: CreditCardWidgetPerfect(
-                cardNumber: cardNumber,
-                expiryDate: expiryDate,
-                cardHolderName: cardHolderName,
-                cvvCode: cvvCode,
-                showBackView: isCvvFocused,
-                height: 270,
-                width: 430,
-                obscureCardNumber: true,
-                obscureCardCvv: true,
-                isHolderNameVisible: true,
-                animationDuration: const Duration(milliseconds: 800),
-              ),
-            ),
-            
-            // Credit card form
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 130),
-                  child: CreditCardFormPerfect(
-                    formKey: formKey,
-                    cardNumber: cardNumber,
-                    cvvCode: cvvCode,
-                    cardHolderName: cardHolderName,
-                    expiryDate: expiryDate,
-                    onCreditCardModelChange: onCreditCardModelChange,
-                    obscureNumber: false,
-                    obscureCvv: true,
-                    isHolderNameVisible: true,
-                    isCardNumberVisible: true,
-                    isExpiryDateVisible: true,
-                    isCvvVisible: true,
-                    enableCardNumberMasking: true,
-                    onFormComplete: () {
-                      if (formKey.currentState!.validate()) {
-                        _showSuccessDialog();
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ],
+  Widget _buildGitHubButton() {
+    return Container(
+      margin: const EdgeInsets.only(top: 20),
+      child: ElevatedButton(
+        onPressed: () {
+          // Open GitHub repository
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF24292e),
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          elevation: 6,
+          shadowColor: const Color.fromRGBO(36, 52, 70, 0.65),
+        ),
+        child: const Text(
+          'See on GitHub',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+            fontSize: 16,
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildMobileLayout() {
-    return Column(
-      children: [
-        // Credit card widget
-        Container(
-          margin: const EdgeInsets.only(top: 30, bottom: -120),
-          child: CreditCardWidgetPerfect(
-            cardNumber: cardNumber,
-            expiryDate: expiryDate,
-            cardHolderName: cardHolderName,
-            cvvCode: cvvCode,
-            showBackView: isCvvFocused,
-            height: 220,
-            width: 310,
-            obscureCardNumber: true,
-            obscureCardCvv: true,
-            isHolderNameVisible: true,
-            animationDuration: const Duration(milliseconds: 800),
-          ),
-        ),
-        
-        // Credit card form
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Container(
-              margin: const EdgeInsets.only(top: 120),
-              child: CreditCardFormPerfect(
-                formKey: formKey,
-                cardNumber: cardNumber,
-                cvvCode: cvvCode,
-                cardHolderName: cardHolderName,
-                expiryDate: expiryDate,
-                onCreditCardModelChange: onCreditCardModelChange,
-                obscureNumber: false,
-                obscureCvv: true,
-                isHolderNameVisible: true,
-                isCardNumberVisible: true,
-                isExpiryDateVisible: true,
-                isCvvVisible: true,
-                enableCardNumberMasking: true,
-                onFormComplete: () {
-                  if (formKey.currentState!.validate()) {
-                    _showSuccessDialog();
-                  }
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -186,14 +180,55 @@ class _CreditCardPerfectDemoState extends State<CreditCardPerfectDemo> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Success!'),
-          content: const Text('Card details are valid and ready to be processed.'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text(
+            'Payment Successful!',
+            style: TextStyle(
+              color: Color(0xFF2364d2),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 64,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Your card details have been validated successfully.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Card: ${cardNumber.replaceAll(RegExp(r'\d(?=\d{4})'), '*')}',
+                style: const TextStyle(
+                  fontFamily: 'monospace',
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFF2364d2),
+              ),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
