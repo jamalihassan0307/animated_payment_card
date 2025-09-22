@@ -37,12 +37,17 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
   late AnimationController _focusController;
   late AnimationController _numberController;
   late AnimationController _slideController;
+  late AnimationController _pulseController;
+  late AnimationController _shimmerController;
   
   late Animation<double> _flipAnimation;
   late Animation<double> _focusAnimation;
   late Animation<double> _numberFadeAnimation;
   late Animation<Offset> _slideUpAnimation;
   late Animation<Offset> _slideDownAnimation;
+  late Animation<double> _pulseAnimation;
+  late Animation<double> _shimmerAnimation;
+  late Animation<Color?> _glowAnimation;
 
   int _currentBackgroundIndex = 1;
   String _previousCardNumber = '';
@@ -57,26 +62,37 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     );
 
     _focusController = AnimationController(
-      duration: const Duration(milliseconds: 350),
+      duration: const Duration(milliseconds: 600),
       vsync: this,
     );
 
     _numberController = AnimationController(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
     _slideController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
 
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    _shimmerController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+
+    // Enhanced animations
     _flipAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _flipController,
-      curve: Curves.easeInOut,
+      curve: Curves.easeInOutCubic,
     ));
 
     _focusAnimation = Tween<double>(
@@ -92,11 +108,11 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _numberController,
-      curve: Curves.easeInOutCubic,
+      curve: Curves.easeOutBack,
     ));
 
     _slideUpAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5),
+      begin: const Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _slideController,
@@ -104,15 +120,43 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     ));
 
     _slideDownAnimation = Tween<Offset>(
-      begin: const Offset(0, -0.3),
+      begin: const Offset(0, -0.2),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _slideController,
-      curve: Curves.bounceOut,
+      curve: Curves.elasticOut,
+    ));
+
+    _pulseAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.elasticInOut,
+    ));
+
+    _shimmerAnimation = Tween<double>(
+      begin: -1.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _shimmerController,
+      curve: Curves.easeInOut,
+    ));
+
+    _glowAnimation = ColorTween(
+      begin: Colors.transparent,
+      end: Colors.white.withOpacity(0.3),
+    ).animate(CurvedAnimation(
+      parent: _focusController,
+      curve: Curves.easeInOut,
     ));
 
     _currentBackgroundIndex = DateTime.now().millisecond % 25 + 1;
     _previousCardNumber = widget.cardNumber;
+
+    // Start continuous animations
+    _pulseController.repeat(reverse: true);
+    _shimmerController.repeat();
   }
 
   @override
@@ -140,7 +184,9 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     // Animate when card number changes
     if (widget.cardNumber != oldWidget.cardNumber) {
       _numberController.forward().then((_) {
-        _numberController.reverse();
+        Future.delayed(const Duration(milliseconds: 100), () {
+          _numberController.reverse();
+        });
       });
       _previousCardNumber = oldWidget.cardNumber;
     }
@@ -152,6 +198,8 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     _focusController.dispose();
     _numberController.dispose();
     _slideController.dispose();
+    _pulseController.dispose();
+    _shimmerController.dispose();
     super.dispose();
   }
 
@@ -291,7 +339,7 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
 
   Widget _buildFocusOverlay() {
     return AnimatedBuilder(
-      animation: _focusAnimation,
+      animation: Listenable.merge([_focusAnimation, _shimmerController]),
       builder: (context, child) {
         if (_focusAnimation.value == 0.0) return const SizedBox();
 
@@ -300,16 +348,57 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                color: Colors.white.withOpacity(0.65 * _focusAnimation.value),
-                width: 2,
+                color: Colors.white.withOpacity(0.8 * _focusAnimation.value),
+                width: 2 + (_focusAnimation.value * 2),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.3 * _focusAnimation.value),
+                  offset: const Offset(0, 0),
+                  blurRadius: 20 * _focusAnimation.value,
+                  spreadRadius: 5 * _focusAnimation.value,
+                ),
+              ],
             ),
             child: Container(
               margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(13),
-                color: const Color.fromRGBO(8, 20, 47, 0.5)
-                    .withOpacity(_focusAnimation.value),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color.fromRGBO(8, 20, 47, 0.4).withOpacity(_focusAnimation.value),
+                    Color.fromRGBO(16, 40, 94, 0.3).withOpacity(_focusAnimation.value),
+                    Color.fromRGBO(8, 20, 47, 0.4).withOpacity(_focusAnimation.value),
+                  ],
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Animated border shimmer
+                  Positioned.fill(
+                    child: AnimatedBuilder(
+                      animation: _shimmerController,
+                      builder: (context, child) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                            gradient: LinearGradient(
+                              begin: Alignment(_shimmerAnimation.value - 1, -1),
+                              end: Alignment(_shimmerAnimation.value, 1),
+                              colors: [
+                                Colors.transparent,
+                                Colors.white.withOpacity(0.1 * _focusAnimation.value),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -376,20 +465,41 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
           height: isSmall ? 30 : 45,
           width: isSmall ? 60 : 100,
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
+            duration: const Duration(milliseconds: 400),
             transitionBuilder: (child, animation) {
               return SlideTransition(
                 position: Tween<Offset>(
                   begin: const Offset(0, -0.5),
                   end: Offset.zero,
-                ).animate(animation),
-                child: FadeTransition(
-                  opacity: animation,
-                  child: child,
+                ).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.elasticOut,
+                )),
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.elasticOut,
+                    ),
+                  ),
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
                 ),
               );
             },
-            child: _buildCardTypeIcon(),
+            child: AnimatedBuilder(
+              animation: _pulseAnimation,
+              builder: (context, child) {
+                return Transform.scale(
+                  scale: widget.focusedField == 'cardNumber' 
+                      ? _pulseAnimation.value * 0.95 + 0.05
+                      : 1.0,
+                  child: _buildCardTypeIcon(),
+                );
+              },
+            ),
           ),
         ),
       ],
@@ -401,47 +511,103 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
     final letterSpacing = isSmall ? 1.5 : 2.0;
 
     return AnimatedBuilder(
-      animation: Listenable.merge([_numberController, _slideController]),
+      animation: Listenable.merge([_numberController, _slideController, _shimmerController]),
       builder: (context, child) {
         return Transform.translate(
           offset: _slideUpAnimation.value * (_slideController.value),
           child: Transform.scale(
-            scale: 1.0 + (_numberFadeAnimation.value * 0.05),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              transitionBuilder: (child, animation) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0, 0.2),
-                    end: Offset.zero,
-                  ).animate(CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.elasticOut,
-                  )),
-                  child: FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  ),
-                );
-              },
-              child: Text(
-                _formatCardNumber(),
-                key: ValueKey(_formatCardNumber()),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: letterSpacing,
-                  fontFamily: 'Source Code Pro',
-                  height: 1.4,
-                  shadows: [
-                    Shadow(
-                      offset: const Offset(7, 6),
-                      blurRadius: 10 + (_numberFadeAnimation.value * 5),
-                      color: Color.fromRGBO(14, 42, 90, 0.8 + (_numberFadeAnimation.value * 0.2)),
+            scale: 1.0 + (_numberFadeAnimation.value * 0.08),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  if (widget.focusedField == 'cardNumber')
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.3 * _slideController.value),
+                      offset: const Offset(0, 0),
+                      blurRadius: 20 * _slideController.value,
+                      spreadRadius: 2 * _slideController.value,
                     ),
-                  ],
-                ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  // Shimmer effect
+                  if (widget.focusedField == 'cardNumber')
+                    Positioned.fill(
+                      child: AnimatedBuilder(
+                        animation: _shimmerController,
+                        builder: (context, child) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                begin: Alignment(_shimmerAnimation.value - 1, 0),
+                                end: Alignment(_shimmerAnimation.value, 0),
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.white.withOpacity(0.2),
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  // Card number text
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    transitionBuilder: (child, animation) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 0.3),
+                          end: Offset.zero,
+                        ).animate(CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.elasticOut,
+                        )),
+                        child: FadeTransition(
+                          opacity: animation,
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.elasticOut,
+                              ),
+                            ),
+                            child: child,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      _formatCardNumber(),
+                      key: ValueKey('${_formatCardNumber()}_${widget.focusedField}'),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: letterSpacing,
+                        fontFamily: 'Source Code Pro',
+                        height: 1.4,
+                        shadows: [
+                          Shadow(
+                            offset: const Offset(7, 6),
+                            blurRadius: 10 + (_numberFadeAnimation.value * 8),
+                            color: Color.fromRGBO(14, 42, 90, 0.8 + (_numberFadeAnimation.value * 0.2)),
+                          ),
+                          if (widget.focusedField == 'cardNumber')
+                            Shadow(
+                              offset: const Offset(0, 0),
+                              blurRadius: 15 * _slideController.value,
+                              color: Colors.white.withOpacity(0.5 * _slideController.value),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -571,8 +737,9 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
 
   Widget _buildBackContent(double width, double height) {
     final isSmall = height < 200;
-    final stripeHeight = isSmall ? 40.0 : 50.0;
-    final topMargin = isSmall ? 20.0 : 30.0;
+    final stripeHeight = isSmall ? 30.0 : 40.0;
+    final topMargin = isSmall ? 15.0 : 25.0;
+    final bottomPadding = isSmall ? 8.0 : 12.0;
 
     return Container(
       width: width,
@@ -587,67 +754,85 @@ class _CreditCardWidgetVueState extends State<CreditCardWidgetVue>
             color: const Color.fromRGBO(0, 0, 19, 0.8),
           ),
 
-          const Spacer(),
-
-          // CVV section
-          Container(
-            padding: EdgeInsets.all(isSmall ? 10.0 : 15.0),
-            child: Row(
-              children: [
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'CVV',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: isSmall ? 12.0 : 15.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Container(
-                      height: isSmall ? 35.0 : 45.0,
-                      width: isSmall ? 80.0 : 120.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(32, 56, 117, 0.35),
-                            offset: Offset(0, 10),
-                            blurRadius: 20,
-                            spreadRadius: -7,
+          // CVV section - use Expanded to fill remaining space
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(bottomPadding),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      const Spacer(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'CVV',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: isSmall ? 10.0 : 12.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          AnimatedBuilder(
+                            animation: _pulseAnimation,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale: widget.focusedField == 'cardCvv' 
+                                    ? _pulseAnimation.value 
+                                    : 1.0,
+                                child: Container(
+                                  height: isSmall ? 25.0 : 30.0,
+                                  width: isSmall ? 60.0 : 80.0,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(4),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: widget.focusedField == 'cardCvv' 
+                                            ? const Color.fromRGBO(32, 56, 117, 0.5)
+                                            : const Color.fromRGBO(32, 56, 117, 0.25),
+                                        offset: const Offset(0, 5),
+                                        blurRadius: widget.focusedField == 'cardCvv' ? 15 : 10,
+                                        spreadRadius: -3,
+                                      ),
+                                    ],
+                                  ),
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(
+                                    widget.cvvCode.isEmpty 
+                                        ? '' 
+                                        : '*' * widget.cvvCode.length.clamp(0, 4),
+                                    style: TextStyle(
+                                      color: const Color(0xFF1a3b5d),
+                                      fontSize: isSmall ? 12.0 : 14.0,
+                                      letterSpacing: 2.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: isSmall ? 8.0 : 12.0),
+                          // Card type on back
+                          SizedBox(
+                            height: isSmall ? 15.0 : 20.0,
+                            child: Opacity(
+                              opacity: 0.7,
+                              child: _buildCardTypeIcon(),
+                            ),
                           ),
                         ],
                       ),
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        widget.cvvCode.isEmpty 
-                            ? '' 
-                            : '*' * widget.cvvCode.length.clamp(0, 4),
-                        style: TextStyle(
-                          color: const Color(0xFF1a3b5d),
-                          fontSize: isSmall ? 14.0 : 18.0,
-                          letterSpacing: 2.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: isSmall ? 15.0 : 30.0),
-                    // Card type on back
-                    SizedBox(
-                      height: isSmall ? 20.0 : 30.0,
-                      child: Opacity(
-                        opacity: 0.7,
-                        child: _buildCardTypeIcon(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
