@@ -30,7 +30,7 @@ class CreditCardWidget extends StatefulWidget {
   final Border? backCardBorder;
 
   const CreditCardWidget({
-    super.key,
+    Key? key,
     required this.cardNumber,
     required this.expiryDate,
     required this.cardHolderName,
@@ -54,7 +54,7 @@ class CreditCardWidget extends StatefulWidget {
     this.customCardTypeIcons = const {},
     this.frontCardBorder,
     this.backCardBorder,
-  });
+  }) : super(key: key);
 
   @override
   State<CreditCardWidget> createState() => _CreditCardWidgetState();
